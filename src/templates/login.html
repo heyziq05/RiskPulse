@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — RiskPulse</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <span class="system-label">RiskPulse · Risk-Based MFA</span>
+    <h1>Risk<span>Pulse</span></h1>
+    <p class="subtitle">Adaptive risk-based authentication by heyziq05</p>
+  </div>
+
+  <!-- Login Card -->
+  <div class="card">
+    <div class="card-title">Sign In</div>
+    <div class="card-desc">
+      Enter your credentials. The system will evaluate login behavior
+      before granting OTP-based access.
+    </div>
+
+    <!-- Error Message (if any) -->
+    {% if error %}
+      <div class="alert-error">{{ error }}</div>
+    {% endif %}
+
+    <!-- Login Form -->
+    <form method="POST" action="/">
+
+      <div class="field-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          required
+        />
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Authenticate
+      </button>
+
+    </form>
+
+    <hr class="divider" />
+
+    <!-- Demo Credentials -->
+    <div class="demo-box">
+      <strong>Demo Credentials</strong>
+      haziq / Haziq@1234 &nbsp;|&nbsp; bob / Bob@5678 &nbsp;|&nbsp; admin / Admin@1234
+      <br/>OTP codes will print in the terminal window.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    RiskPulse &copy; heyziq05
+  </div>
+
+</body>
+</html>

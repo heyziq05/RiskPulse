@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Access Granted — RiskPulse</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <span class="system-label">RiskPulse · Authentication Complete</span>
+    <h1>Access <span style="color: var(--accent-green);">Granted</span></h1>
+    <p class="subtitle">All verification stages passed</p>
+  </div>
+
+  <!-- Success Card -->
+  <div class="card">
+
+    <p class="user-greeting">Welcome, {{ username }}!</p>
+    <p class="access-granted">Authenticated</p>
+
+    <!-- Risk Level Summary -->
+    <div class="risk-badge risk-{{ risk_level }}" style="margin: 0 auto 20px; display:flex; width:fit-content;">
+      <span class="risk-dot"></span>
+      Login classified as {{ risk_level }} RISK
+    </div>
+
+    <!-- Score and Flags Summary -->
+    <div class="score-display score-{{ risk_level }}">
+      <div>
+        <div class="score-label">FINAL RISK SCORE</div>
+        <div class="score-label" style="margin-top:4px; font-size:10px;">
+          {% if risk_level == 'LOW' %}
+            Normal login — no intervention required
+          {% elif risk_level == 'MEDIUM' %}
+            Moderate risk — 5s delay was applied
+          {% else %}
+            High risk — extra caution flagged
+          {% endif %}
+        </div>
+      </div>
+      <div class="score-value">{{ risk_score }}</div>
+    </div>
+
+    <!-- Feature Flags at Login -->
+    <div class="flags-grid">
+      <div class="flag-item">
+        <span class="flag-label">FAILED ATTEMPTS</span>
+        <span class="flag-value flag-info">{{ flags.failed_attempts }}</span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">RAPID ATTEMPT</span>
+        <span class="flag-value {% if flags.rapid_attempt %}flag-true{% else %}flag-false{% endif %}">
+          {% if flags.rapid_attempt %}Yes{% else %}No{% endif %}
+        </span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">DEVICE TRUST</span>
+        <span class="flag-value {% if flags.unknown_device %}flag-true{% else %}flag-false{% endif %}">
+          {% if flags.unknown_device %}Unknown{% else %}Trusted{% endif %}
+        </span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">LOGIN HOUR</span>
+        <span class="flag-value flag-info">{{ flags.login_hour }}:00</span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Authentication Stages Summary -->
+    <div class="demo-box">
+      <strong>Authentication Stages Completed</strong>
+      <div style="margin-top:8px; line-height:2.2; font-size:11px;">
+        <span style="color:#4ade80">✓</span> Stage 1 — Password Authentication<br/>
+        <span style="color:#4ade80">✓</span> Stage 2 — Risk Assessment<br/>
+        <span style="color:#4ade80">✓</span> Stage 3 — OTP (MFA) Verification<br/>
+        <span style="color:#06b6d4">→</span> Session is now active
+      </div>
+    </div>
+
+    <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="margin-top:20px;">
+      Sign Out
+    </a>
+
+  </div>
+
+  <div class="page-footer">
+    RiskPulse &copy; heyziq05
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OTP Verification — RiskPulse</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <span class="system-label">RiskPulse · Step 2 of 2</span>
+    <h1>OTP <span>Verification</span></h1>
+    <p class="subtitle">One-Time Password Required</p>
+  </div>
+
+  <!-- OTP Card -->
+  <div class="card">
+
+    <!-- Risk Level Badge -->
+    <div class="risk-badge risk-{{ risk_level }}">
+      <span class="risk-dot"></span>
+      {{ risk_level }} RISK
+    </div>
+
+    <div class="card-title">Enter Your OTP</div>
+    <div class="card-desc">
+      Hello <strong style="color:#e2e8f0">{{ username }}</strong>.
+      A 6-digit code has been sent to your registered device.
+      Check the terminal for this demo.
+    </div>
+
+    <!-- Error Message -->
+    {% if error %}
+      <div class="alert-error">{{ error }}</div>
+    {% endif %}
+
+    <!-- Risk Score Box -->
+    <div class="score-display score-{{ risk_level }}">
+      <div>
+        <div class="score-label">RISK SCORE</div>
+        <div class="score-label" style="margin-top:4px; font-size:10px;">
+          {% if risk_level == 'LOW' %}
+            Standard login flow
+          {% elif risk_level == 'MEDIUM' %}
+            Delay applied (5s rate-limit)
+          {% else %}
+            Elevated — monitoring active
+          {% endif %}
+        </div>
+      </div>
+      <div class="score-value">{{ risk_score }}</div>
+    </div>
+
+    <!-- Feature Flags Breakdown -->
+    <div class="flags-grid">
+      <div class="flag-item">
+        <span class="flag-label">FAILED ATTEMPTS</span>
+        <span class="flag-value {% if flags.failed_flag %}flag-true{% else %}flag-false{% endif %}">
+          {{ flags.failed_attempts }} attempts
+        </span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">RAPID ATTEMPT</span>
+        <span class="flag-value {% if flags.rapid_attempt %}flag-true{% else %}flag-false{% endif %}">
+          {% if flags.rapid_attempt %}Detected{% else %}Normal{% endif %}
+        </span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">DEVICE STATUS</span>
+        <span class="flag-value {% if flags.unknown_device %}flag-true{% else %}flag-false{% endif %}">
+          {% if flags.unknown_device %}Unknown{% else %}Trusted{% endif %}
+        </span>
+      </div>
+      <div class="flag-item">
+        <span class="flag-label">LOGIN HOUR</span>
+        <span class="flag-value {% if flags.unusual_hour %}flag-true{% else %}flag-info{% endif %}">
+          {{ flags.login_hour }}:00
+          {% if flags.unusual_hour %}(unusual){% else %}(normal){% endif %}
+        </span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- OTP Form -->
+    <form method="POST" action="/otp">
+      <div class="field-group">
+        <label for="otp">6-Digit OTP Code</label>
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          class="otp-input"
+          placeholder="_ _ _ _ _ _"
+          maxlength="6"
+          pattern="\d{6}"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Verify OTP
+      </button>
+    </form>
+
+    <div class="text-center mt-12">
+      <a href="{{ url_for('logout') }}" class="text-link">← Cancel and return to login</a>
+    </div>
+
+    <div class="demo-box" style="margin-top:20px;">
+      <strong>How to find your OTP</strong>
+      Look at the Flask terminal / console window where you ran
+      <code>python app.py</code> — the 6-digit code is printed there.
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    RiskPulse &copy; heyziq05
+  </div>
+
+</body>
+</html>

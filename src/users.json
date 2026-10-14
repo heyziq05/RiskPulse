@@ -1,0 +1,27 @@
+{
+  "haziq": {
+    "password": "Haziq@1234",
+    "known_devices": [
+      "device-90daa551"
+    ],
+    "blocked_until": 1779444253.6267202,
+    "failed_attempts": 0,
+    "last_attempt_time": 1791896704.467773
+  },
+  "bob": {
+    "password": "Bob@5678",
+    "known_devices": [
+      "device-xyz789"
+    ],
+    "blocked_until": 1779430702.5470953,
+    "failed_attempts": 0,
+    "last_attempt_time": 1779430582.5470924
+  },
+  "admin": {
+    "password": "Admin@1234",
+    "known_devices": [],
+    "blocked_until": null,
+    "failed_attempts": 0,
+    "last_attempt_time": 1779422916.040854
+  }
+}

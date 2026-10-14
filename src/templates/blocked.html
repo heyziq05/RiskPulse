@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Blocked — RiskPulse</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <span class="system-label">RiskPulse · Mitigation Active</span>
+    <h1>Account <span style="color: var(--accent-red);">Blocked</span></h1>
+    <p class="subtitle">Suspicious activity detected</p>
+  </div>
+
+  <!-- Blocked Card -->
+  <div class="card">
+
+    <!-- Danger badge -->
+    <div class="risk-badge risk-HIGH" style="margin-bottom:16px;">
+      <span class="risk-dot"></span>
+      HIGH RISK DETECTED
+    </div>
+
+    <p class="card-desc text-center" style="font-size:13px; margin-bottom:8px;">
+      Account
+      <strong style="color:#e2e8f0"> {{ username }}</strong>
+      has been temporarily suspended due to repeated suspicious login activity.
+    </p>
+
+    <!-- Live Countdown Timer -->
+    <span class="countdown" id="timer">{{ remaining }}</span>
+    <p class="text-center" style="font-size:11px; color: var(--text-muted); margin-bottom:24px;">
+      seconds remaining before you may try again
+    </p>
+
+    <hr class="divider" />
+
+    <!-- What triggered this? -->
+    <div class="demo-box">
+      <strong>Why was this triggered?</strong>
+      Our risk engine calculated a score of <strong>5 or above</strong>,
+      indicating a high probability of a password guessing attack.
+      This may be due to:
+      <ul style="margin-top:8px; padding-left:16px; line-height:2;">
+        <li>3+ consecutive failed login attempts (+2 pts)</li>
+        <li>Rapid repeated requests (&lt;10s interval) (+2 pts)</li>
+        <li>Unrecognized or unknown device (+1 pt)</li>
+        <li>Incorrect password submitted (+2 pts)</li>
+        <li>Unusual login hour (11 PM–5 AM) (+1 pt)</li>
+      </ul>
+    </div>
+
+    <a href="{{ url_for('login') }}" class="btn btn-secondary mt-20">
+      ← Return to Login
+    </a>
+
+  </div>
+
+  <div class="page-footer">
+    RiskPulse &copy; heyziq05
+  </div>
+
+  <!-- Live countdown JavaScript -->
+  <script>
+    let remaining = parseInt("{{ remaining }}", 10);
+    const timer = document.getElementById("timer");
+    const btn = document.querySelector(".btn-secondary");
+
+    const interval = setInterval(() => {
+      remaining--;
+      if (remaining <= 0) {
+        timer.textContent = "0";
+        clearInterval(interval);
+        // Auto-redirect back to login when countdown reaches 0
+        setTimeout(() => { window.location.href = "{{ url_for('login') }}"; }, 800);
+      } else {
+        timer.textContent = remaining;
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
