@@ -10,6 +10,7 @@
 
 - [Overview](#overview)
 - [Features](#features)
+- [Tech Stack](#tech-stack)
 - [Folder Structure](#folder-structure)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -40,7 +41,23 @@ Username     →     Risk Scoring          →    OTP Verification
 After the password is verified, the system evaluates login behaviour using a rule-based risk engine and decides whether to allow, delay, or block the login attempt before proceeding to OTP.
 
 ---
+## Tech Stack
 
+| Layer | Technology | Used for |
+|-------|-----------|----------|
+| Language | Python 3.8+ | Core application logic |
+| Web framework | Flask | Routing, request handling, sessions, serving pages |
+| Templating | Jinja2 (bundled with Flask) | Rendering HTML pages with dynamic data (risk score, flags, username) |
+| Frontend | HTML5 + CSS3 | Login, OTP, blocked and success pages |
+| Client scripting | Vanilla JavaScript | Live countdown timer on the blocked page |
+| Fonts | IBM Plex Mono, Syne | Monospace UI text and display headings |
+| Data storage | JSON files (`users.json`, `otp_store.json`) | User records, trusted devices, block state, temporary OTPs |
+| Session management | Flask sessions (signed cookies) | Keeping track of the user between login, OTP and success steps |
+| Device fingerprinting | `hashlib` (MD5 of User-Agent) | Generating a stable device ID |
+| OTP generation | `random` | Creating 6-digit one-time codes |
+| Timing & risk rules | `time`, `datetime` | Rapid-attempt detection, unusual-hour checks, block expiry, OTP expiry |
+| OTP delivery (demo) | Terminal output | Simulates email/SMS delivery |
+---
 ## Features
 
 - Username and password authentication
